@@ -16,5 +16,37 @@
         <div id="matches"></div>
         <div id="results"></div>
     </div>
+     <script src="script.js"></script>  <!-- Your existing script file -->
+    <script>
+        // Insert your API key and specific API URL details here
+        const API_TOKEN = '51ef7437f1c74894876fccd2f0373d15';  // Replace with your actual API token
+        const LEAGUE_ID = 'BSA'; // Example: Serie A in Brazil (check for the actual ID)
+
+        function fetchTeamLogos() {
+            const url = `https://api.football-data.org/v2/competitions/BSA/teams`;
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Auth-Token': API_TOKEN
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.teams) {
+                    data.teams.forEach(team => {
+                        const imgElement = document.querySelector(`img[data-team-id='${team.id}']`);
+                        if (imgElement) {
+                            imgElement.src = team.crestUrl;
+                        }
+                    });
+                }
+            })
+            .catch(error => console.error('Failed to fetch team logos:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchTeamLogos);
+    </script>
 </body>
 </html>
+
+
