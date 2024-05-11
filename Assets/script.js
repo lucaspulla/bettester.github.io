@@ -1,17 +1,44 @@
-google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages':['corechart']});
 
 let currentRound = 0;
-let totalCorrect = 0;
-let totalGuesses = 0;
+let totalCorrect = 0;  // Track the total number of correct guesses
+let totalGuesses = 0;  // Track the total number of guesses
 
 const rounds = [
-    // Include your round data here as previously defined
+    // Round 1
+    [
+        {id: 1, team1: 'Palmeiras', team2: 'Cuiabá', correctOutcome: 'team1'},
+        {id: 2, team1: 'América-MG', team2: 'Fluminense', correctOutcome: 'team2'},
+        {id: 3, team1: 'Botafogo', team2: 'São Paulo', correctOutcome: 'team1'}
+    ],
+    // Round 2
+    [
+        {id: 4, team1: 'Atlético Mineiro', team2: 'Coritiba', correctOutcome: 'team1'},
+        {id: 5, team1: 'Santos', team2: 'Fortaleza', correctOutcome: 'team1'},
+        {id: 6, team1: 'Internacional', team2: 'Red Bull Bragantino', correctOutcome: 'draw'},
+        {id: 7, team1: 'Avaí', team2: 'Athletico Paranaense', correctOutcome: 'draw'},
+        {id: 8, team1: 'Bahia', team2: 'Ceará', correctOutcome: 'team1'},
+        {id: 9, team1: 'Cruzeiro', team2: 'Flamengo', correctOutcome: 'draw'},
+        {id: 10, team1: 'Coritiba', team2: 'Vasco da Gama', correctOutcome: 'team1'}
+    ],
+    // Round 3
+    [
+        {id: 11, team1: 'Fluminense', team2: 'Atlético Goianiense', correctOutcome: 'draw'},
+        {id: 12, team1: 'São Paulo', team2: 'Goiás', correctOutcome: 'draw'},
+        {id: 13, team1: 'Fortaleza', team2: 'Juventude', correctOutcome: 'team1'},
+        {id: 14, team1: 'Red Bull Bragantino', team2: 'Bragantino', correctOutcome: 'team1'},
+        {id: 15, team1: 'Ceará', team2: 'América-MG', correctOutcome: 'draw'},
+        {id: 16, team1: 'Flamengo', team2: 'Avaí', correctOutcome: 'team1'},
+        {id: 17, team1: 'Vasco da Gama', team2: 'Santos', correctOutcome: 'team1'},
+        {id: 18, team1: 'Athletico Paranaense', team2: 'Bahia', correctOutcome: 'team1'},
+        {id: 19, team1: 'Palmeiras', team2: 'Cruzeiro', correctOutcome: 'team1'}
+    ]
 ];
 
 document.getElementById('startGame').addEventListener('click', startGame);
 
 function startGame() {
-    this.style.display = 'none';
+    this.style.display = 'none';  // Hide start game button
     loadRound();
 }
 
@@ -36,7 +63,9 @@ function loadRound() {
 
 function selectOutcome(matchId, outcome) {
     const matchElement = document.getElementById(`match_${matchId}`);
-    Array.from(matchElement.children).forEach(child => child.classList.remove('selected'));
+    Array.from(matchElement.children).forEach(child => {
+        child.classList.remove('selected');
+    });
     document.querySelector(`#match_${matchId} [onclick="selectOutcome(${matchId}, '${outcome}')"]`).classList.add('selected');
 }
 
@@ -46,10 +75,24 @@ function submitGuesses() {
     rounds[currentRound].forEach(match => {
         const matchElement = document.getElementById(`match_${match.id}`);
         const selectedElement = matchElement.querySelector('.selected');
-        let userGuess = selectedElement ? selectedElement.getAttribute('onclick').split("'")[3] : null;
+        let userGuess = null;
+
+        // Determine user's guess based on selected element
+        if (selectedElement) {
+            if (selectedElement.classList.contains('team-logo')) {
+                // Determine if the selected logo corresponds to team1 or team2
+                userGuess = selectedElement.alt === match.team1 ? 'team1' : 'team2';
+            } else if (selectedElement.classList.contains('draw')) {
+                userGuess = 'draw';
+            }
+        }
+
+        // Compare user's guess to the correct outcome
         const result = userGuess === match.correctOutcome ? 'Correct' : 'Wrong';
         resultsHtml += `<p>${match.team1} vs ${match.team2}: Your guess was ${result}.</p>`;
-        if (result === 'Correct') roundCorrect++;
+        if (result === 'Correct') {
+            roundCorrect++;
+        }
     });
     totalCorrect += roundCorrect;
     totalGuesses += rounds[currentRound].length;
@@ -64,7 +107,7 @@ function submitGuesses() {
 
 function nextRound() {
     currentRound++;
-    document.getElementById('results').innerHTML = '';
+    document.getElementById('results').innerHTML = '';  // Clear previous results
     loadRound();
 }
 
