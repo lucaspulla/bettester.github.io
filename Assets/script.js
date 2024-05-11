@@ -1,4 +1,4 @@
-        google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {'packages':['corechart']});
 
 let currentRound = 0;
 let totalCorrect = 0;  // Track the total number of correct guesses
@@ -34,11 +34,14 @@ const rounds = [
         {id: 19, team1: 'Palmeiras', team2: 'Cruzeiro', correctOutcome: 'team1'}
     ]
 ];
+];
 
-document.getElementById('startGame').addEventListener('click', startGame);
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('startGame').addEventListener('click', startGame);
+});
 
 function startGame() {
-    this.style.display = 'none';  // Hide start game button
+    this.style.display = 'none';  // Hide the start game button
     loadRound();
 }
 
@@ -77,22 +80,15 @@ function submitGuesses() {
         const selectedElement = matchElement.querySelector('.selected');
         let userGuess = null;
 
-        // Determine user's guess based on selected element
         if (selectedElement) {
-            if (selectedElement.classList.contains('team-logo')) {
-                // Determine if the selected logo corresponds to team1 or team2
-                userGuess = selectedElement.alt === match.team1 ? 'team1' : 'team2';
-            } else if (selectedElement.classList.contains('draw')) {
-                userGuess = 'draw';
-            }
+            userGuess = selectedElement.classList.contains('team-logo') ? 
+                        (selectedElement.alt === match.team1 ? 'team1' : 'team2') :
+                        'draw';
         }
 
-        // Compare user's guess to the correct outcome
         const result = userGuess === match.correctOutcome ? 'Correct' : 'Wrong';
         resultsHtml += `<p>${match.team1} vs ${match.team2}: Your guess was ${result}.</p>`;
-        if (result === 'Correct') {
-            roundCorrect++;
-        }
+        if (result === 'Correct') roundCorrect++;
     });
     totalCorrect += roundCorrect;
     totalGuesses += rounds[currentRound].length;
@@ -107,7 +103,7 @@ function submitGuesses() {
 
 function nextRound() {
     currentRound++;
-    document.getElementById('results').innerHTML = '';  // Clear previous results
+    document.getElementById('results').innerHTML = '';
     loadRound();
 }
 
@@ -120,10 +116,11 @@ function displayFinalResults() {
         <p>Winning Percentage: ${winningPercentage.toFixed(2)}%</p>
         <div id="chart_div" style="width: 400px; height: 300px;"></div>
     `;
-    google.charts.setOnLoadCallback(() => drawChart(winningPercentage));
+    google.charts.setOnLoadCallback(drawChart);
 }
 
-function drawChart(winningPercentage) {
+function drawChart() {
+    let winningPercentage = (totalCorrect / totalGuesses) * 100;
     var data = google.visualization.arrayToDataTable([
         ['Result', 'Percentage'],
         ['Correct', winningPercentage],
