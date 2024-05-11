@@ -6,7 +6,36 @@ let totalGuesses = 0;  // Track the total number of guesses
 let teamLogos = {};    // Store team logos fetched from the API
 
 const rounds = [
-    // Your rounds data as provided previously
+  
+      // Round 1
+    [
+        {id: 1, team1: 'Palmeiras', team2: 'Cuiabá', correctOutcome: 'team1'},
+        {id: 2, team1: 'América-MG', team2: 'Fluminense', correctOutcome: 'team2'},
+        {id: 3, team1: 'Botafogo', team2: 'São Paulo', correctOutcome: 'team1'}
+    ],
+    // Round 2
+    [
+        {id: 4, team1: 'Atlético Mineiro', team2: 'Coritiba', correctOutcome: 'team1'},
+        {id: 5, team1: 'Santos', team2: 'Fortaleza', correctOutcome: 'team1'},
+        {id: 6, team1: 'Internacional', team2: 'Red Bull Bragantino', correctOutcome: 'draw'},
+        {id: 7, team1: 'Avaí', team2: 'Athletico Paranaense', correctOutcome: 'draw'},
+        {id: 8, team1: 'Bahia', team2: 'Ceará', correctOutcome: 'team1'},
+        {id: 9, team1: 'Cruzeiro', team2: 'Flamengo', correctOutcome: 'draw'},
+        {id: 10, team1: 'Coritiba', team2: 'Vasco da Gama', correctOutcome: 'team1'}
+    ],
+    // Round 3
+    [
+        {id: 11, team1: 'Fluminense', team2: 'Atlético Goianiense', correctOutcome: 'draw'},
+        {id: 12, team1: 'São Paulo', team2: 'Goiás', correctOutcome: 'draw'},
+        {id: 13, team1: 'Fortaleza', team2: 'Juventude', correctOutcome: 'team1'},
+        {id: 14, team1: 'Red Bull Bragantino', team2: 'Bragantino', correctOutcome: 'team1'},
+        {id: 15, team1: 'Ceará', team2: 'América-MG', correctOutcome: 'draw'},
+        {id: 16, team1: 'Flamengo', team2: 'Avaí', correctOutcome: 'team1'},
+        {id: 17, team1: 'Vasco da Gama', team2: 'Santos', correctOutcome: 'team1'},
+        {id: 18, team1: 'Athletico Paranaense', team2: 'Bahia', correctOutcome: 'team1'},
+        {id: 19, team1: 'Palmeiras', team2: 'Cruzeiro', correctOutcome: 'team1'}
+    ]
+
 ];
 
 document.addEventListener('DOMContentLoaded', function() {
