@@ -1,3 +1,5 @@
+google.charts.load('current', {'packages':['corechart']});
+
 let currentRound = 0;
 let totalCorrect = 0;
 let totalGuesses = 0;
@@ -18,5 +20,20 @@ const rounds = [
         {id: 8, team1: 'Bahia', team2: 'Ceará', correctOutcome: 'team1'},
         {id: 9, team1: 'Cruzeiro', team2: 'Flamengo', correctOutcome: 'draw'},
         {id: 10, team1: 'Coritiba', team2: 'Vasco da Gama', correctOutcome: 'team1'}
-    ],
-    // Round 
+],
+    // Round 3
+    [
+        {id: 11, team1: 'Palmeiras', team2: 'Santos', correctOutcome: 'team1'},
+        {id: 12, team1: 'Atlético Mineiro', team2: 'Botafogo', correctOutcome: 'team1'},
+        {id: 13, team1: 'São Paulo', team2: 'Fortaleza', correctOutcome: 'team1'},
+        {id: 14, team1: 'Internacional', team2: 'Cruzeiro', correctOutcome: 'team1'},
+        {id: 15, team1: 'Athletico Paranaense', team2: 'Bahia', correctOutcome: 'team1'},
+        {id: 16, team1: 'Flamengo', team2: 'Ceará', correctOutcome: 'team1'},
+        {id: 17, team1: 'Coritiba', team2: 'Avaí', correctOutcome: 'team1'}
+    ]
+];
+
+const teamLogos = {
+    'Palmeiras': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/SEP_Palmeiras_logo.svg/1200px-SEP_Palmeiras_logo.svg.png',
+    'Cuiabá': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Cuiab%C3%A1_Esporte_Clube_logo.svg/1200px-Cuiab%C3%A1_Esporte_Clube_logo.svg.png',
+    'América-MG': 'https://upload.wikimedia.org
