@@ -3,41 +3,30 @@ google.charts.load('current', {'packages':['corechart']});
 let currentRound = 0;
 let totalCorrect = 0;  // Track the total number of correct guesses
 let totalGuesses = 0;  // Track the total number of guesses
+let teamLogos = {};    // Store team logos fetched from the API
 
 const rounds = [
-    // Round 1
-    [
-        {id: 1, team1: 'Palmeiras', team2: 'Cuiabá', correctOutcome: 'team1'},
-        {id: 2, team1: 'América-MG', team2: 'Fluminense', correctOutcome: 'team2'},
-        {id: 3, team1: 'Botafogo', team2: 'São Paulo', correctOutcome: 'team1'}
-    ],
-    // Round 2
-    [
-        {id: 4, team1: 'Atlético Mineiro', team2: 'Coritiba', correctOutcome: 'team1'},
-        {id: 5, team1: 'Santos', team2: 'Fortaleza', correctOutcome: 'team1'},
-        {id: 6, team1: 'Internacional', team2: 'Red Bull Bragantino', correctOutcome: 'draw'},
-        {id: 7, team1: 'Avaí', team2: 'Athletico Paranaense', correctOutcome: 'draw'},
-        {id: 8, team1: 'Bahia', team2: 'Ceará', correctOutcome: 'team1'},
-        {id: 9, team1: 'Cruzeiro', team2: 'Flamengo', correctOutcome: 'draw'},
-        {id: 10, team1: 'Coritiba', team2: 'Vasco da Gama', correctOutcome: 'team1'}
-    ],
-    // Round 3
-    [
-        {id: 11, team1: 'Fluminense', team2: 'Atlético Goianiense', correctOutcome: 'draw'},
-        {id: 12, team1: 'São Paulo', team2: 'Goiás', correctOutcome: 'draw'},
-        {id: 13, team1: 'Fortaleza', team2: 'Juventude', correctOutcome: 'team1'},
-        {id: 14, team1: 'Red Bull Bragantino', team2: 'Bragantino', correctOutcome: 'team1'},
-        {id: 15, team1: 'Ceará', team2: 'América-MG', correctOutcome: 'draw'},
-        {id: 16, team1: 'Flamengo', team2: 'Avaí', correctOutcome: 'team1'},
-        {id: 17, team1: 'Vasco da Gama', team2: 'Santos', correctOutcome: 'team1'},
-        {id: 18, team1: 'Athletico Paranaense', team2: 'Bahia', correctOutcome: 'team1'},
-        {id: 19, team1: 'Palmeiras', team2: 'Cruzeiro', correctOutcome: 'team1'}
-    ]
+    // Your rounds data as provided previously
 ];
 
 document.addEventListener('DOMContentLoaded', function() {
+    fetchTeamLogos();
     document.getElementById('startGame').addEventListener('click', startGame);
 });
+
+function fetchTeamLogos() {
+    const apiUrl = 'https://api.football-data.org/v2/competitions/BSA/teams';
+    fetch(apiUrl, {
+        headers: { 'X-Auth-Token': '51ef7437f1c74894876fccd2f0373d15' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        data.teams.forEach(team => {
+            teamLogos[team.name] = team.crestUrl; // Map team names to logo URLs
+        });
+    })
+    .catch(error => console.error('Failed to fetch team logos:', error));
+}
 
 function startGame() {
     this.style.display = 'none';  // Hide the start game button
@@ -48,13 +37,20 @@ function loadRound() {
     const matches = rounds[currentRound];
     let matchHtml = `<h2>Round ${currentRound + 1}</h2>`;
     matches.forEach(match => {
+        const homeLogo = teamLogos[match.team1] || 'path_to_default_logo.png';
+        const awayLogo = teamLogos[match.team2] || 'path_to_default_logo.png';
+
         matchHtml += `
             <div class="match">
-                <div class="match-header">${match.team1} vs ${match.team2}</div>
+                <div class="match-header">
+                    <img src="${homeLogo}" alt="${match.team1}" class="team-logo">
+                    ${match.team1} vs ${match.team2}
+                    <img src="${awayLogo}" alt="${match.team2}" class="team-logo">
+                </div>
                 <div class="match-body" id="match_${match.id}">
-                    <img src="team1_logo.png" alt="${match.team1}" class="team-logo" onclick="selectOutcome(${match.id}, 'team1')">
-                    <div class="draw" onclick="selectOutcome(${match.id}, 'draw')">X</div>
-                    <img src="team2_logo.png" alt="${match.team2}" class="team-logo" onclick="selectOutcome(${match.id}, 'team2')">
+                    <button onclick="selectOutcome(${match.id}, 'team1')">Home Win</button>
+                    <button onclick="selectOutcome(${match.id}, 'draw')">Draw</button>
+                    <button onclick="selectOutcome(${match.id}, 'team2')">Away Win</button>
                 </div>
             </div>
         `;
