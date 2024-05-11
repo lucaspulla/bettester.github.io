@@ -34,7 +34,6 @@ const rounds = [
         {id: 19, team1: 'Palmeiras', team2: 'Cruzeiro', correctOutcome: 'team1'}
     ]
 ];
-];
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startGame').addEventListener('click', startGame);
